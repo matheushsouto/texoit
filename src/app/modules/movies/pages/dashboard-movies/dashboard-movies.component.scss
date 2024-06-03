@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  gap: 20px;
+
+  .container-one, .container-two {
+    width: 50%;
+  }
+}
+
+.table-container {
+  width: 100%; // centraliza a tabela na página
+}
+
+app-list-movies-years, app-list-studios-years {
+  width: 50%;
+}

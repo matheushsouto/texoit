@@ -1,0 +1,15 @@
+<div class="container">
+  <app-list-movies-years [title]="'List years with multiple winners'" [columns]="['year', 'winCount']" [data]="yearsWithMultipleWinners"></app-list-movies-years>
+  <app-list-studios-years [title]="'Top 3 studios with winners'" [columns]="['name', 'winCount']" [data]="topThreeStudiosWithWinners"></app-list-studios-years>
+</div>
+
+<div class="container">
+  <div class="container-one">
+    <h2>Producers with longest and shortest interval between wins</h2>
+    <app-list-producers [title]="'Maximum'" [columns]="['producer', 'interval', 'previousYear', 'followingYear']" [data]="winMaxIntervalProducers"></app-list-producers>
+    <app-list-producers [title]="'Minimum'" [columns]="['producer', 'interval', 'previousYear', 'followingYear']" [data]="winMinIntervalProducers"></app-list-producers>
+  </div>
+  <div class="container-two">
+    <app-list-winners [title]="'List movie winners by year'" [columns]="['id', 'year', 'title']" [data]="moviesPerYear"></app-list-winners>
+  </div>
+</div>
