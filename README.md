@@ -64,7 +64,7 @@ A estrutura do projeto está organizada da seguinte forma:
 
 1. Clone o repositório:
 
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/matheushsouto/texoit
    
 2. Instale as dependências:
 
