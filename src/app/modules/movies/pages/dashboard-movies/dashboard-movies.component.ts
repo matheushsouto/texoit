@@ -4,12 +4,13 @@ import { ListMoviesYearsComponent } from '../../components/list-movies-years/lis
 import { ListProducersComponent } from '../../components/list-producers/list-producers.component';
 import { ListWinnersComponent } from '../../components/list-winners/list-winners.component';
 import { MoviesService } from '../../../../shared/services/movies.service';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { ListStudiosYearsComponent } from '../../components/list-studios-years/list-studios-years.component';
 import { StudioWinCount, StudiosResponse } from '../../interfaces/studio';
 import { YearWithMultipleWinners, YearsResponse } from '../../interfaces/year';
 import { ProducerWinInterval, WinIntervalProducersResponse } from '../../interfaces/producer';
+import { Movie } from '../../interfaces/movie';
 
 @Component({
   selector: 'app-dashboard-movies',
@@ -30,52 +31,60 @@ export class DashboardMoviesComponent implements OnInit {
   public topThreeStudiosWithWinners: StudioWinCount[] = [];
   public winMinIntervalProducers: ProducerWinInterval[] = [];
   public winMaxIntervalProducers: ProducerWinInterval[] = [];
-  public moviesPerYear = [];
+  public moviesPerYear!: Movie[];
+  public subscription!: Subscription;
 
-  constructor(private _moviesService: MoviesService) {}
+  constructor(private moviesService: MoviesService) {}
 
   ngOnInit(): void {
-    this.getMoviesWinners();
-    this.getTopThreeStudios();
-    this.getWinIntervalProducers();
-    // this.getMoviePerYears();
+    this.loadMoviesWinners();
+    this.loadTopThreeStudios();
+    this.loadWinIntervalProducers();
   }
 
-  private getMoviesWinners() {
-    this._moviesService
+  private loadMoviesWinners(): void {
+    this.moviesService
       .getMoviesMultipleWins()
       .pipe(take(1))
-      .subscribe((resp: YearsResponse) => {
-        console.log(resp);
-        this.yearsWithMultipleWinners = resp.years;
+      .subscribe((response: YearsResponse) => {
+        this.yearsWithMultipleWinners = response.years;
       });
   }
 
-  private getTopThreeStudios() {
-    this._moviesService
+  private loadTopThreeStudios(): void {
+    this.moviesService
       .getStudiosWithWinCount()
       .pipe(take(1))
-      .subscribe((resp: StudiosResponse) => {
-        this.topThreeStudiosWithWinners = resp.studios.slice(0, 3);
+      .subscribe((response: StudiosResponse) => {
+        this.topThreeStudiosWithWinners = response.studios.slice(0, 3);
       });
   }
 
-  private getWinIntervalProducers() {
-    this._moviesService
+  private loadWinIntervalProducers(): void {
+    this.moviesService
       .getWinIntervalProducers()
       .pipe(take(1))
-      .subscribe((resp: WinIntervalProducersResponse) => {
-        this.winMinIntervalProducers = resp.min;
-        this.winMaxIntervalProducers = resp.max;
+      .subscribe((response: WinIntervalProducersResponse) => {
+        this.winMinIntervalProducers = response.min;
+        this.winMaxIntervalProducers = response.max;
       });
   }
 
-  private getMoviePerYears() {
-    this._moviesService
-      .getMoviesPerYear()
+  public loadMoviePerYears(yearId: number): void {
+    this.unsubscribeFromPreviousSubscription();
+
+    this.subscription = this.moviesService
+      .getMoviesPerYear(yearId)
       .pipe(take(1))
-      .subscribe((resp) => {
-        this.moviesPerYear = resp[0].movies;
+      .subscribe((response: Movie[]) => {
+        console.log(response);
+        this.moviesPerYear = response;
       });
+  }
+
+  private unsubscribeFromPreviousSubscription(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

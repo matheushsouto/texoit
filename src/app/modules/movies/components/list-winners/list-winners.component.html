@@ -1,7 +1,7 @@
 <h2>{{ title }}</h2>
 <mat-form-field>
   <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Search by year">
+  <input matInput type="number" (input)="getItems($event)" placeholder="Search by year">
 </mat-form-field>
 <table mat-table [dataSource]="data" class="mat-elevation-z8">
   <!-- Id Column -->

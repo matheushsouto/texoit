@@ -10,6 +10,6 @@
     <app-list-producers [title]="'Minimum'" [columns]="['producer', 'interval', 'previousYear', 'followingYear']" [data]="winMinIntervalProducers"></app-list-producers>
   </div>
   <div class="container-two">
-    <app-list-winners [title]="'List movie winners by year'" [columns]="['id', 'year', 'title']" [data]="moviesPerYear"></app-list-winners>
+    <app-list-winners [title]="'List movie winners by year'" [columns]="['id', 'year', 'title']" [data]="moviesPerYear" (searchItem)="loadMoviePerYears($event)"></app-list-winners>
   </div>
 </div>

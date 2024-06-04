@@ -5,31 +5,30 @@ import { Observable } from 'rxjs';
 import { StudiosResponse } from '../../modules/movies/interfaces/studio';
 import { YearsResponse } from '../../modules/movies/interfaces/year';
 import { WinIntervalProducersResponse } from '../../modules/movies/interfaces/producer';
+import { Movie } from '../../modules/movies/interfaces/movie';
+
 @Injectable({
   providedIn: 'root'
 })
 export class MoviesService {
-  private moviesMultipleWinUrl = 'api/moviesMultipleWinners';
-  private studiosWithWinCount = 'api/studiosWithWinCount';
-  private winIntervalProducers = 'api/winIntervalProducers';
-  private moviesPerYear = 'api/moviePerYear';
-  private api: string = environment.api;
+  private readonly api: string = environment.api;
+  private readonly moviesEndpoint: string = this.api + 'movies?';
 
-  constructor(private _http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getMoviesMultipleWins(): Observable<YearsResponse> {
-    return this._http.get<YearsResponse>(this.api + 'movies?projection=years-with-multiple-winners');
+    return this.http.get<YearsResponse>(`${this.moviesEndpoint}projection=years-with-multiple-winners`);
   }
 
   getStudiosWithWinCount(): Observable<StudiosResponse> {
-    return this._http.get<StudiosResponse>(this.api + 'movies?projection=studios-with-win-count');
+    return this.http.get<StudiosResponse>(`${this.moviesEndpoint}projection=studios-with-win-count`);
   }
 
   getWinIntervalProducers(): Observable<WinIntervalProducersResponse> {
-    return this._http.get<WinIntervalProducersResponse>(this.api + 'movies?projection=max-min-win-interval-for-producers');
+    return this.http.get<WinIntervalProducersResponse>(`${this.moviesEndpoint}projection=max-min-win-interval-for-producers`);
   }
 
-  getMoviesPerYear() {
-    return this._http.get<any[]>(this.moviesPerYear);
+  getMoviesPerYear(id: number): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.moviesEndpoint}winner=true&year=${id}`);
   }
 }
