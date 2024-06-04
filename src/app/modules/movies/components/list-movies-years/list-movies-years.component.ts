@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { YearWithMultipleWinners } from '../../interfaces/year';
 
 @Component({
   selector: 'app-list-movies-years',
@@ -10,6 +11,6 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class ListMoviesYearsComponent {
   @Input() columns: string[] = [];
-  @Input() data: any;
+  @Input() data!: YearWithMultipleWinners[];
   @Input() title = '';
 }

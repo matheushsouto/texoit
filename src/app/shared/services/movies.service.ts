@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StudiosResponse } from '../../modules/movies/interfaces/studio';
+import { YearsResponse } from '../../modules/movies/interfaces/year';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +16,8 @@ export class MoviesService {
 
   constructor(private _http: HttpClient) { }
 
-  getMoviesMultipleWins(): Observable<any[]> {
-    return this._http.get<any[]>(this.moviesMultipleWinUrl);
+  getMoviesMultipleWins(): Observable<YearsResponse> {
+    return this._http.get<YearsResponse>(this.api + 'movies?projection=years-with-multiple-winners');
   }
 
   getStudiosWithWinCount(): Observable<StudiosResponse> {

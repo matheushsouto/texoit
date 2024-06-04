@@ -8,6 +8,7 @@ import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { ListStudiosYearsComponent } from '../../components/list-studios-years/list-studios-years.component';
 import { StudioWinCount, StudiosResponse } from '../../interfaces/studio';
+import { YearWithMultipleWinners, YearsResponse } from '../../interfaces/year';
 
 @Component({
   selector: 'app-dashboard-movies',
@@ -24,7 +25,7 @@ import { StudioWinCount, StudiosResponse } from '../../interfaces/studio';
   styleUrl: './dashboard-movies.component.scss',
 })
 export class DashboardMoviesComponent implements OnInit {
-  public yearsWithMultipleWinners = [];
+  public yearsWithMultipleWinners: YearWithMultipleWinners[] = [];
   public topThreeStudiosWithWinners: StudioWinCount[] = [];
   public winMinIntervalProducers = [];
   public winMaxIntervalProducers = [];
@@ -35,16 +36,17 @@ export class DashboardMoviesComponent implements OnInit {
   ngOnInit(): void {
     this.getMoviesWinners();
     this.getTopThreeStudios();
-    this.getWinIntervalProducers();
-    this.getMoviePerYears();
+    // this.getWinIntervalProducers();
+    // this.getMoviePerYears();
   }
 
   private getMoviesWinners() {
     this._moviesService
       .getMoviesMultipleWins()
       .pipe(take(1))
-      .subscribe((resp) => {
-        this.yearsWithMultipleWinners = resp[0].years;
+      .subscribe((resp: YearsResponse) => {
+        console.log(resp);
+        this.yearsWithMultipleWinners = resp.years;
       });
   }
 
