@@ -1,6 +1,8 @@
+import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { StudiosResponse } from '../../modules/movies/interfaces/studio';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,6 +11,7 @@ export class MoviesService {
   private studiosWithWinCount = 'api/studiosWithWinCount';
   private winIntervalProducers = 'api/winIntervalProducers';
   private moviesPerYear = 'api/moviePerYear';
+  private api: string = environment.api;
 
   constructor(private _http: HttpClient) { }
 
@@ -16,8 +19,8 @@ export class MoviesService {
     return this._http.get<any[]>(this.moviesMultipleWinUrl);
   }
 
-  getStudiosWithWinCount() {
-    return this._http.get<any[]>(this.studiosWithWinCount);
+  getStudiosWithWinCount(): Observable<StudiosResponse> {
+    return this._http.get<StudiosResponse>(this.api + 'movies?projection=studios-with-win-count');
   }
 
   getWinIntervalProducers() {

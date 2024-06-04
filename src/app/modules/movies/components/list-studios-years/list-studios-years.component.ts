@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { StudioWinCount } from '../../interfaces/studio';
 
 @Component({
   selector: 'app-list-studios-years',
@@ -10,6 +11,6 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class ListStudiosYearsComponent {
   @Input() columns: string[] = [];
-  @Input() data: any;
+  @Input() data!: StudioWinCount[];
   @Input() title = '';
 }

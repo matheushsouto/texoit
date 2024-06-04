@@ -7,6 +7,7 @@ import { MoviesService } from '../../../../shared/services/movies.service';
 import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { ListStudiosYearsComponent } from '../../components/list-studios-years/list-studios-years.component';
+import { StudioWinCount, StudiosResponse } from '../../interfaces/studio';
 
 @Component({
   selector: 'app-dashboard-movies',
@@ -24,7 +25,7 @@ import { ListStudiosYearsComponent } from '../../components/list-studios-years/l
 })
 export class DashboardMoviesComponent implements OnInit {
   public yearsWithMultipleWinners = [];
-  public topThreeStudiosWithWinners = [];
+  public topThreeStudiosWithWinners: StudioWinCount[] = [];
   public winMinIntervalProducers = [];
   public winMaxIntervalProducers = [];
   public moviesPerYear = [];
@@ -51,8 +52,8 @@ export class DashboardMoviesComponent implements OnInit {
     this._moviesService
       .getStudiosWithWinCount()
       .pipe(take(1))
-      .subscribe((resp) => {
-        this.topThreeStudiosWithWinners = resp[0].studios;
+      .subscribe((resp: StudiosResponse) => {
+        this.topThreeStudiosWithWinners = resp.studios;
       });
   }
 
