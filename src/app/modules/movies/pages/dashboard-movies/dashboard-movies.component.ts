@@ -77,7 +77,6 @@ export class DashboardMoviesComponent implements OnInit {
       .getMoviesPerYear(yearId)
       .pipe(take(1))
       .subscribe((response: Movie[]) => {
-        console.log(response);
         this.moviesPerYear = response;
       });
   }
