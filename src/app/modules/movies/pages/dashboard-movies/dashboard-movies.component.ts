@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListStudiosYearsComponent } from '../../components/list-studios-years/list-studios-years.component';
 import { StudioWinCount, StudiosResponse } from '../../interfaces/studio';
 import { YearWithMultipleWinners, YearsResponse } from '../../interfaces/year';
+import { ProducerWinInterval, WinIntervalProducersResponse } from '../../interfaces/producer';
 
 @Component({
   selector: 'app-dashboard-movies',
@@ -27,8 +28,8 @@ import { YearWithMultipleWinners, YearsResponse } from '../../interfaces/year';
 export class DashboardMoviesComponent implements OnInit {
   public yearsWithMultipleWinners: YearWithMultipleWinners[] = [];
   public topThreeStudiosWithWinners: StudioWinCount[] = [];
-  public winMinIntervalProducers = [];
-  public winMaxIntervalProducers = [];
+  public winMinIntervalProducers: ProducerWinInterval[] = [];
+  public winMaxIntervalProducers: ProducerWinInterval[] = [];
   public moviesPerYear = [];
 
   constructor(private _moviesService: MoviesService) {}
@@ -36,7 +37,7 @@ export class DashboardMoviesComponent implements OnInit {
   ngOnInit(): void {
     this.getMoviesWinners();
     this.getTopThreeStudios();
-    // this.getWinIntervalProducers();
+    this.getWinIntervalProducers();
     // this.getMoviePerYears();
   }
 
@@ -55,7 +56,7 @@ export class DashboardMoviesComponent implements OnInit {
       .getStudiosWithWinCount()
       .pipe(take(1))
       .subscribe((resp: StudiosResponse) => {
-        this.topThreeStudiosWithWinners = resp.studios;
+        this.topThreeStudiosWithWinners = resp.studios.slice(0, 3);
       });
   }
 
@@ -63,9 +64,9 @@ export class DashboardMoviesComponent implements OnInit {
     this._moviesService
       .getWinIntervalProducers()
       .pipe(take(1))
-      .subscribe((resp) => {
-        this.winMinIntervalProducers = resp[0].min;
-        this.winMaxIntervalProducers = resp[0].max;
+      .subscribe((resp: WinIntervalProducersResponse) => {
+        this.winMinIntervalProducers = resp.min;
+        this.winMaxIntervalProducers = resp.max;
       });
   }
 

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StudiosResponse } from '../../modules/movies/interfaces/studio';
 import { YearsResponse } from '../../modules/movies/interfaces/year';
+import { WinIntervalProducersResponse } from '../../modules/movies/interfaces/producer';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,8 +25,8 @@ export class MoviesService {
     return this._http.get<StudiosResponse>(this.api + 'movies?projection=studios-with-win-count');
   }
 
-  getWinIntervalProducers() {
-    return this._http.get<any[]>(this.winIntervalProducers);
+  getWinIntervalProducers(): Observable<WinIntervalProducersResponse> {
+    return this._http.get<WinIntervalProducersResponse>(this.api + 'movies?projection=max-min-win-interval-for-producers');
   }
 
   getMoviesPerYear() {
