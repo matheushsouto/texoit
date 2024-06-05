@@ -36,6 +36,10 @@ Este projeto é um teste técnico desenvolvido para a empresa Texo IT. A aplica�
 
     ng test
 
+Coverage: 
+
+![image](https://github.com/matheushsouto/texoit/assets/20692121/6d705b8f-05dc-4256-8e69-a88cac299ea2)
+
 Abra o navegador e acesse:
 
 http://localhost:4200
