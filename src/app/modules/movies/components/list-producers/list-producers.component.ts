@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { ProducerWinInterval } from '../../interfaces/producer';
 
 @Component({
   selector: 'app-list-producers',
@@ -10,6 +11,6 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class ListProducersComponent {
   @Input() columns: string[] = [];
-  @Input() data: any;
+  @Input() data!: ProducerWinInterval[];
   @Input() title = '';
 }

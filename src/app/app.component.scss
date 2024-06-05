@@ -1,16 +1,16 @@
 .main-container {
   display: flex;
-  height: calc(100vh - 64px); // Ajusta a altura para excluir a altura do cabeçalho
+  height: calc(100vh - 64px);
 }
 
 app-sidebar {
   width: 15%;
-  min-width: 200px; // Ajuste conforme necessário
-  background-color: #f4f4f4; // Cor de fundo para visualização
+  min-width: 200px;
+  background-color: #f4f4f4;
 }
 
 .content {
   width: 85%;
-  background-color: #ffffff; // Cor de fundo para visualização
+  background-color: #ffffff;
   padding: 16px;
 }
