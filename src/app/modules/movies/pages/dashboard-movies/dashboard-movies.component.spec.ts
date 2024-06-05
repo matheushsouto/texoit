@@ -7,6 +7,10 @@ import { YearsResponse } from '../../interfaces/year';
 import { StudiosResponse } from '../../interfaces/studio';
 import { WinIntervalProducersResponse } from '../../interfaces/producer';
 import { Movie } from '../../interfaces/movie';
+import { mockYearsResponse } from '../../../../mock/years-response-mock';
+import { mockStudiosResponse } from '../../../../mock/studios-response-mock';
+import { mockWinIntervalResponse } from '../../../../mock/win-interval-response-mock';
+import { mockMovies } from '../../../../mock/movies-mock';
 
 describe('DashboardMoviesComponent', () => {
   let component: DashboardMoviesComponent;
@@ -45,9 +49,6 @@ describe('DashboardMoviesComponent', () => {
   });
 
   it('should load years with multiple winners on init', () => {
-    const mockYearsResponse: YearsResponse = {
-      years: [{ year: 2020, winnerCount: 0 }]
-    };
     moviesService.getMoviesMultipleWins.and.returnValue(of(mockYearsResponse));
     component.ngOnInit();
     expect(moviesService.getMoviesMultipleWins).toHaveBeenCalled();
@@ -55,14 +56,6 @@ describe('DashboardMoviesComponent', () => {
   });
 
   it('should load top three studios on init', () => {
-    const mockStudiosResponse: StudiosResponse = {
-      studios: [
-        { name: 'Studio A', winCount: 10 },
-        { name: 'Studio B', winCount: 8 },
-        { name: 'Studio C', winCount: 6 },
-        { name: 'Studio D', winCount: 4 }
-      ]
-    };
     moviesService.getStudiosWithWinCount.and.returnValue(of(mockStudiosResponse));
     component.ngOnInit();
     expect(moviesService.getStudiosWithWinCount).toHaveBeenCalled();
@@ -71,10 +64,6 @@ describe('DashboardMoviesComponent', () => {
   });
 
   it('should load win interval producers on init', () => {
-    const mockWinIntervalResponse: WinIntervalProducersResponse = {
-      min: [{ producer: 'Producer A', interval: 1, previousWin: 2000, followingWin: 2001 }],
-      max: [{ producer: 'Producer B', interval: 10, previousWin: 1990, followingWin: 2000 }]
-    };
     moviesService.getWinIntervalProducers.and.returnValue(of(mockWinIntervalResponse));
     component.ngOnInit();
     expect(moviesService.getWinIntervalProducers).toHaveBeenCalled();
@@ -83,14 +72,6 @@ describe('DashboardMoviesComponent', () => {
   });
 
   it('should load movies per year', () => {
-    const mockMovies: Movie[] = [{
-      id: 1,
-      title: 'Movie A',
-      year: 2020,
-      studios: ['Studio A'],
-      producers: ['Producer A'],
-      winner: false
-    }];
     moviesService.getMoviesPerYear.and.returnValue(of(mockMovies));
     component.loadMoviePerYears(2020);
     expect(moviesService.getMoviesPerYear).toHaveBeenCalledWith(2020);

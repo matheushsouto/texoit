@@ -1,11 +1,11 @@
 import { environment } from './../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StudiosResponse } from '../../modules/movies/interfaces/studio';
 import { YearsResponse } from '../../modules/movies/interfaces/year';
 import { WinIntervalProducersResponse } from '../../modules/movies/interfaces/producer';
-import { Movie } from '../../modules/movies/interfaces/movie';
+import { Movie, MoviesResponse } from '../../modules/movies/interfaces/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,23 @@ export class MoviesService {
 
   getMoviesPerYear(id: number): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${this.moviesEndpoint}winner=true&year=${id}`);
+  }
+
+  getAllMovies(page: number, size: number, winner?: boolean, year?: number): Observable<MoviesResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    params = this.addOptionalParams(params, { winner, year });
+    return this.http.get<MoviesResponse>(this.moviesEndpoint, { params });
+  }
+
+  private addOptionalParams(params: HttpParams, optionalParams: { [key: string]: any }): HttpParams {
+    Object.keys(optionalParams).forEach(key => {
+      if (optionalParams[key] !== undefined) {
+        params = params.set(key, optionalParams[key].toString());
+      }
+    });
+    return params;
   }
 }
