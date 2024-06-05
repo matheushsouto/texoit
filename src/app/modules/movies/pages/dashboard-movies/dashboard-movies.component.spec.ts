@@ -1,55 +1,106 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DashboardMoviesComponent } from './dashboard-movies.component';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MoviesService } from '../../../../shared/services/movies.service';
 import { of } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardMoviesComponent } from './dashboard-movies.component';
+import { MoviesService } from '../../../../shared/services/movies.service';
+import { YearsResponse } from '../../interfaces/year';
+import { StudiosResponse } from '../../interfaces/studio';
+import { WinIntervalProducersResponse } from '../../interfaces/producer';
+import { Movie } from '../../interfaces/movie';
 
 describe('DashboardMoviesComponent', () => {
   let component: DashboardMoviesComponent;
   let fixture: ComponentFixture<DashboardMoviesComponent>;
-  let service: MoviesService;
+  let moviesService: jasmine.SpyObj<MoviesService>;
 
   beforeEach(async () => {
+    const moviesServiceSpy = jasmine.createSpyObj('MoviesService', [
+      'getMoviesMultipleWins',
+      'getStudiosWithWinCount',
+      'getWinIntervalProducers',
+      'getMoviesPerYear'
+    ]);
+
+    moviesServiceSpy.getMoviesMultipleWins.and.returnValue(of({ years: [] } as YearsResponse));
+    moviesServiceSpy.getStudiosWithWinCount.and.returnValue(of({ studios: [] } as StudiosResponse));
+    moviesServiceSpy.getWinIntervalProducers.and.returnValue(of({ min: [], max: [] } as WinIntervalProducersResponse));
+    moviesServiceSpy.getMoviesPerYear.and.returnValue(of([] as Movie[]));
+
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        BrowserAnimationsModule,
         DashboardMoviesComponent
       ],
-      providers: [MoviesService]
-    })
-    .compileComponents();
-
+      providers: [
+        { provide: MoviesService, useValue: moviesServiceSpy }
+      ]
+    }).compileComponents();
     fixture = TestBed.createComponent(DashboardMoviesComponent);
     component = fixture.componentInstance;
-    service = TestBed.inject(MoviesService);
-    fixture.detectChanges();
+    moviesService = TestBed.inject(MoviesService) as jasmine.SpyObj<MoviesService>;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get movies winners on init', () => {
-    const response = { years: [2000, 2001] };
-    spyOn(service, 'getMoviesMultipleWins').and.returnValue(of([response]));
+  it('should load years with multiple winners on init', () => {
+    const mockYearsResponse: YearsResponse = {
+      years: [{ year: 2020, winnerCount: 0 }]
+    };
+    moviesService.getMoviesMultipleWins.and.returnValue(of(mockYearsResponse));
     component.ngOnInit();
-    expect(component.yearsWithMultipleWinners).toEqual(jasmine.arrayContaining(response.years));
+    expect(moviesService.getMoviesMultipleWins).toHaveBeenCalled();
+    expect(component.yearsWithMultipleWinners).toEqual(mockYearsResponse.years);
   });
 
-  it('should get top three studios on init', () => {
-    const response = { studios: ['Studio 1', 'Studio 2', 'Studio 3'] };
-    spyOn(service, 'getStudiosWithWinCount').and.returnValue(of([response]));
+  it('should load top three studios on init', () => {
+    const mockStudiosResponse: StudiosResponse = {
+      studios: [
+        { name: 'Studio A', winCount: 10 },
+        { name: 'Studio B', winCount: 8 },
+        { name: 'Studio C', winCount: 6 },
+        { name: 'Studio D', winCount: 4 }
+      ]
+    };
+    moviesService.getStudiosWithWinCount.and.returnValue(of(mockStudiosResponse));
     component.ngOnInit();
-    expect(component.topThreeStudiosWithWinners).toEqual(jasmine.arrayContaining(response.studios));
+    expect(moviesService.getStudiosWithWinCount).toHaveBeenCalled();
+    expect(component.topThreeStudiosWithWinners.length).toBe(3);
+    expect(component.topThreeStudiosWithWinners).toEqual(mockStudiosResponse.studios.slice(0, 3));
   });
 
-  it('should get win interval producers on init', () => {
-    const response = { min: ['Producer 1'], max: ['Producer 2'] };
-    spyOn(service, 'getWinIntervalProducers').and.returnValue(of([response]));
+  it('should load win interval producers on init', () => {
+    const mockWinIntervalResponse: WinIntervalProducersResponse = {
+      min: [{ producer: 'Producer A', interval: 1, previousWin: 2000, followingWin: 2001 }],
+      max: [{ producer: 'Producer B', interval: 10, previousWin: 1990, followingWin: 2000 }]
+    };
+    moviesService.getWinIntervalProducers.and.returnValue(of(mockWinIntervalResponse));
     component.ngOnInit();
-    expect(component.winMinIntervalProducers).toEqual(jasmine.arrayContaining(response.min));
-    expect(component.winMaxIntervalProducers).toEqual(jasmine.arrayContaining(response.max));
+    expect(moviesService.getWinIntervalProducers).toHaveBeenCalled();
+    expect(component.winMinIntervalProducers).toEqual(mockWinIntervalResponse.min);
+    expect(component.winMaxIntervalProducers).toEqual(mockWinIntervalResponse.max);
+  });
+
+  it('should load movies per year', () => {
+    const mockMovies: Movie[] = [{
+      id: 1,
+      title: 'Movie A',
+      year: 2020,
+      studios: ['Studio A'],
+      producers: ['Producer A'],
+      winner: false
+    }];
+    moviesService.getMoviesPerYear.and.returnValue(of(mockMovies));
+    component.loadMoviePerYears(2020);
+    expect(moviesService.getMoviesPerYear).toHaveBeenCalledWith(2020);
+    expect(component.moviesPerYear).toEqual(mockMovies);
+  });
+
+  it('should unsubscribe from previous subscription', () => {
+    const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+    component.subscription = subscriptionSpy;
+    component.loadMoviePerYears(2020);
+    expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
   });
 });

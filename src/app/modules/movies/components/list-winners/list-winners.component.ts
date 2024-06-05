@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { Movie } from '../../interfaces/movie';
 
 @Component({
   selector: 'app-list-winners',
@@ -17,7 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 export class ListWinnersComponent {
   @Input() columns: string[] = [];
   @Input() title = '';
-  @Input() data: any;
+  @Input() data!: Movie[];
   @Output() searchItem = new EventEmitter<number>();
 
   public getItems(data: Event) {
