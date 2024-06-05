@@ -2,49 +2,7 @@
 
 ## Descrição do Projeto
 
-Este projeto é um teste técnico desenvolvido para a empresa Texo IT. A aplicação é construída utilizando Angular e Angular Material. Para criar o mock dos dados, foi utilizada a biblioteca angular-in-memory-web-api.
-
-## Estrutura do Projeto
-
-A estrutura do projeto está organizada da seguinte forma:
-
-/src
-│
-├── /app
-│ │
-│ ├── /core
-│ │ ...
-│ │
-│ ├── /modules
-│ │ .pages
-│ │ components
-│ ├── /shared
-│ │ │
-│ │ ├── /components
-│ │ │ │
-│ │ │ ├── /layout
-│ │ │ │ │
-│ │ │ │ ├── header.component.html
-│ │ │ │ ├── header.component.scss
-│ │ │ │ ├── header.component.ts
-│ │ │ │ └── header.component.spec.ts
-│ │ │ │ │
-│ │ │ │ ├── sidebar.component.html
-│ │ │ │ ├── sidebar.component.scss
-│ │ │ │ ├── sidebar.component.ts
-│ │ │ │ └── sidebar.component.spec.ts
-│ │ │ │
-│ │ │ └── /other
-│ │ ...
-│ │
-│ ├── /assets
-│ ├── /environments
-│ └── app-routing.module.ts
-│
-├── /assets
-├── /environments
-├── /styles
-└── /index.html
+Este projeto é um teste técnico desenvolvido para a empresa Texo IT. A aplicação é construída utilizando Angular e Angular Material. 
 
 ### Descrição das Pastas
 
@@ -73,6 +31,10 @@ A estrutura do projeto está organizada da seguinte forma:
 3. Execute o servidor de desenvolvimento
 
     ng serve
+
+4. Testes Unitarios
+
+    ng test
 
 Abra o navegador e acesse:
 
