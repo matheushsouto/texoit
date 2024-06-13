@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Movie, MoviesResponse } from '../../interfaces/movie';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { WinnerSelection } from '../../interfaces/select';
 
 @Component({
   selector: 'app-list-movies',
@@ -38,8 +39,8 @@ export class ListMoviesComponent implements OnInit {
     totalPages: 0,
     totalElements: 0,
   };
-  public filterInfo: { winner?: boolean; year?: number } = {};
-  public selectedWinner!: boolean;
+  public filterInfo: { winner?: WinnerSelection; year?: number } = {};
+  public selectedWinner!: WinnerSelection;
 
   constructor(private movieService: MoviesService) {}
 
@@ -95,8 +96,24 @@ export class ListMoviesComponent implements OnInit {
     return (event.target as HTMLInputElement).value.trim().toLowerCase();
   }
 
-  public onWinnerSelectionChange(value: boolean): void {
-    this.filterInfo.winner = value;
+  public onWinnerSelectionChange(value: WinnerSelection): void {
+    this.updateWinnerFilter(value);
     this.loadMovies();
+  }
+
+  private updateWinnerFilter(value: WinnerSelection): void {
+    if (value === 'all') {
+      this.removeWinnerFilter();
+    } else {
+      this.setWinnerFilter(value);
+    }
+  }
+
+  private setWinnerFilter(value: boolean): void {
+    this.filterInfo.winner = value;
+  }
+
+  private removeWinnerFilter(): void {
+    delete this.filterInfo.winner;
   }
 }

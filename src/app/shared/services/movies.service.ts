@@ -6,6 +6,7 @@ import { StudiosResponse } from '../../modules/movies/interfaces/studio';
 import { YearsResponse } from '../../modules/movies/interfaces/year';
 import { WinIntervalProducersResponse } from '../../modules/movies/interfaces/producer';
 import { Movie, MoviesResponse } from '../../modules/movies/interfaces/movie';
+import { WinnerSelection } from '../../modules/movies/interfaces/select';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class MoviesService {
     return this.http.get<Movie[]>(`${this.moviesEndpoint}winner=true&year=${id}`);
   }
 
-  getAllMovies(page: number, size: number, winner?: boolean, year?: number): Observable<MoviesResponse> {
+  getAllMovies(page: number, size: number, winner?: WinnerSelection, year?: number): Observable<MoviesResponse> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());

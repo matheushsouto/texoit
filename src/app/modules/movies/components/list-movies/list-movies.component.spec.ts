@@ -95,4 +95,25 @@ describe('ListMoviesComponent', () => {
     expect(component.filterInfo.winner).toBe(true);
     expect(movieService.getAllMovies).toHaveBeenCalled();
   }));
+
+  it('should update winner filter correctly when updateWinnerFilter is called', fakeAsync(() => {
+    component['updateWinnerFilter']('all' as unknown as boolean);
+    tick();
+    expect(component.filterInfo.winner).toBeUndefined();
+    component['updateWinnerFilter'](true);
+    tick();
+    expect(component.filterInfo.winner).toBe(true);
+    component['updateWinnerFilter'](false);
+    tick();
+    expect(component.filterInfo.winner).toBe(false);
+  }));
+
+  it('should remove winner filter when removeWinnerFilter is called', fakeAsync(() => {
+    component.onWinnerSelectionChange(true);
+    tick();
+    expect(component.filterInfo.winner).toBe(true);
+    component['removeWinnerFilter']();
+    tick();
+    expect(component.filterInfo.winner).toBeUndefined();
+  }));
 });

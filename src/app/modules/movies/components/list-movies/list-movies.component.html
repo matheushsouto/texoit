@@ -26,9 +26,10 @@
         Winner
         <mat-form-field>
           <mat-label>Yes/No</mat-label>
-          <mat-select [(value)]="selectedWinner" (selectionChange)="onWinnerSelectionChange($event.value)">
+          <mat-select [(value)]="filterInfo.winner" (selectionChange)="onWinnerSelectionChange($event.value)">
             <mat-option [value]="true">Yes</mat-option>
             <mat-option [value]="false">No</mat-option>
+            <mat-option value="all">All</mat-option>
           </mat-select>
         </mat-form-field>
 
