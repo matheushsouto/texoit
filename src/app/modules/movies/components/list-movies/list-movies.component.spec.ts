@@ -116,4 +116,10 @@ describe('ListMoviesComponent', () => {
     tick();
     expect(component.filterInfo.winner).toBeUndefined();
   }));
+
+  it('should reset pagination when resetPagination is called', fakeAsync(() => {
+    component.paginationInfo.page = 2;
+    component.resetPagination();
+    expect(component.paginationInfo.page).toBe(0);
+  }));
 });

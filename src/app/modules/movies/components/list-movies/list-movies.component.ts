@@ -80,6 +80,10 @@ export class ListMoviesComponent implements OnInit {
     this.loadMovies();
   }
 
+  public resetPagination(): void {
+    this.paginationInfo.page = 0;
+  }
+
   public onYearChange(data: Event): void {
     const filterValue = this.getFilterValueFromEvent(data);
 
@@ -89,6 +93,7 @@ export class ListMoviesComponent implements OnInit {
     }
 
     this.filterInfo.year = parseInt(filterValue);
+    this.resetPagination();
     this.loadMovies();
   }
 
@@ -98,6 +103,7 @@ export class ListMoviesComponent implements OnInit {
 
   public onWinnerSelectionChange(value: WinnerSelection): void {
     this.updateWinnerFilter(value);
+    this.resetPagination();
     this.loadMovies();
   }
 
